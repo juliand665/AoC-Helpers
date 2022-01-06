@@ -9,69 +9,83 @@ public struct Vector2: Hashable {
 	
 	public var x, y: Int
 	
+	@inlinable
+	public init(_ x: Int, _ y: Int) {
+		self.x = x
+		self.y = y
+	}
+	
+	@inlinable
 	public var absolute: Int {
 		abs(x) + abs(y)
 	}
 	
+	@inlinable
 	public var neighbors: [Vector2] {
 		applyingOffsets(.distance1)
 	}
 	
+	@inlinable
 	public var neighborsWithDiagonals: [Vector2] {
 		applyingOffsets(.distance1orDiagonal)
 	}
 	
+	@inlinable
 	public var angle: Double {
 		atan2(Double(y), Double(x))
 	}
 	
+	@inlinable
 	public static func + (lhs: Vector2, rhs: Vector2) -> Vector2 {
 		lhs <- { $0 += rhs }
 	}
 	
+	@inlinable
 	public static func += (lhs: inout Vector2, rhs: Vector2) {
 		lhs.x += rhs.x
 		lhs.y += rhs.y
 	}
 	
+	@inlinable
 	public static func - (lhs: Vector2, rhs: Vector2) -> Vector2 {
 		lhs <- { $0 -= rhs }
 	}
 	
+	@inlinable
 	public static func -= (lhs: inout Vector2, rhs: Vector2) {
 		lhs.x -= rhs.x
 		lhs.y -= rhs.y
 	}
 	
+	@inlinable
 	public static func * (vec: Vector2, scale: Int) -> Vector2 {
 		vec <- { $0 *= scale }
 	}
 	
+	@inlinable
 	public static func * (scale: Int, vec: Vector2) -> Vector2 {
 		vec <- { $0 *= scale }
 	}
 	
+	@inlinable
 	public static func *= (vec: inout Vector2, scale: Int) {
 		vec.x *= scale
 		vec.y *= scale
 	}
 	
+	@inlinable
 	public func distance(to other: Vector2) -> Int {
 		(self - other).absolute
 	}
 	
+	@inlinable
 	public func with(x: Int? = nil, y: Int? = nil) -> Vector2 {
 		.init(x ?? self.x, y ?? self.y)
 	}
 }
 
-extension Vector2 {
-	public init(_ x: Int, _ y: Int) {
-		self.init(x: x, y: y)
-	}
-}
-
 extension Vector2: Comparable {
+	@inlinable
 	public static func < (lhs: Vector2, rhs: Vector2) -> Bool {
 		(lhs.y, lhs.x) < (rhs.y, rhs.x)
 	}
@@ -99,16 +113,59 @@ public enum Direction: CaseIterable, Rotatable {
 	case down
 	case left
 	
+	@inlinable
 	public var offset: Vector2 {
 		switch self {
 		case .up:
-			return Vector2(x: 00, y: -1)
+			return Vector2(00, -1)
 		case .right:
-			return Vector2(x: +1, y: 00)
+			return Vector2(+1, 00)
 		case .down:
-			return Vector2(x: 00, y: +1)
+			return Vector2(00, +1)
 		case .left:
-			return Vector2(x: -1, y: 00)
+			return Vector2(-1, 00)
+		}
+	}
+	
+	@inlinable
+	public var opposite: Self {
+		switch self {
+		case .up:
+			return .down
+		case .right:
+			return .left
+		case .down:
+			return .up
+		case .left:
+			return .right
+		}
+	}
+}
+
+public struct DirectionSet: OptionSet {
+	public static let up = Self(rawValue: 1 << 0)
+	public static let right = Self(rawValue: 1 << 1)
+	public static let down = Self(rawValue: 1 << 2)
+	public static let left = Self(rawValue: 1 << 3)
+	
+	public var rawValue: UInt8
+	
+	@inlinable
+	public init(rawValue: UInt8) {
+		self.rawValue = rawValue
+	}
+	
+	@inlinable
+	public init(_ direction: Direction) {
+		switch direction {
+		case .up:
+			self = .up
+		case .right:
+			self = .right
+		case .down:
+			self = .down
+		case .left:
+			self = .left
 		}
 	}
 }
