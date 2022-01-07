@@ -13,6 +13,14 @@ extension Sequence {
 	}
 	
 	@inlinable
+	public func max<C>(on accessor: (Element) -> C) -> Element? where C: Comparable {
+		self
+			.map { ($0, accessor($0)) }
+			.max { $0.1 < $1.1 }
+			.map { $0.0 }
+	}
+	
+	@inlinable
 	public func onlyElement(where isIncluded: (Element) throws -> Bool) rethrows -> Element? {
 		try filter(isIncluded).onlyElement()
 	}
