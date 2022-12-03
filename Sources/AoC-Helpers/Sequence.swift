@@ -22,7 +22,7 @@ extension Sequence {
 	
 	@inlinable
 	public func onlyElement(where isIncluded: (Element) throws -> Bool) rethrows -> Element? {
-		try filter(isIncluded).onlyElement()
+		try lazy.filter(isIncluded).onlyElement()
 	}
 	
 	@inlinable
@@ -43,6 +43,32 @@ extension Sequence {
 	@inlinable
 	public func allNil<T>() -> Bool where Element == T? {
 		allSatisfy { $0 == nil }
+	}
+	
+	@inlinable
+	public func reduce(_ combine: (Element, Element) throws -> Element) rethrows -> Element? {
+		guard let (first, rest) = chop() else { return nil }
+		return try rest.reduce(first, combine)
+	}
+	
+	@inlinable
+	public func chop() -> (Element, some Sequence<Element>)? {
+		var iterator = makeIterator()
+		guard let first = iterator.next() else {
+			return nil as (Element, IteratorSequence<Iterator>)? // ugh
+		}
+		return (first, IteratorSequence(iterator))
+	}
+}
+
+extension Sequence where Element: Sequence, Element.Element: Hashable {
+	public func intersectionOfElements() -> Set<Element.Element> {
+		guard let (first, rest) = chop() else { return [] }
+		return rest.reduce(into: Set(first)) { $0.formIntersection($1) }
+	}
+	
+	public func unionOfElements() -> Set<Element.Element> {
+		reduce(into: Set()) { $0.formUnion($1) }
 	}
 }
 
