@@ -1,4 +1,5 @@
 import Foundation
+import SimpleParser
 
 public func input(filename: String = "input") -> Substring {
 	let url = URL(fileURLWithPath: Bundle.main.path(forResource: filename, ofType: "txt")!)
@@ -34,5 +35,28 @@ extension Character {
 	@inlinable
 	public static func + (base: Self, offset: Int) -> Self {
 		.init(.init(base.asciiValue! + .init(offset)))
+	}
+}
+
+extension Parser {
+	@usableFromInline
+	static let digits = Set("0123456789")
+	@usableFromInline
+	static let digitsOrSigns = Set("+-0123456789")
+	@inlinable
+	public func ints(allowSigns: Bool = false) -> [Int] {
+		let triggers = allowSigns ? Self.digitsOrSigns : Self.digits
+		return Array(sequence(state: self) {
+			$0.consume { !triggers.contains($0) }
+			if $0.isDone { return nil }
+			return $0.readInt()
+		})
+	}
+}
+
+extension StringProtocol {
+	@inlinable
+	public func ints(allowSigns: Bool = false) -> [Int] {
+		Parser(reading: self).ints(allowSigns: allowSigns)
 	}
 }
