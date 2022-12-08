@@ -11,6 +11,7 @@ public struct Matrix<Element> {
 		rows.joined()
 	}
 	
+	@inlinable
 	public init<Outer: Collection, Inner: Collection>(
 		_ rows: Outer
 	) where Outer.Element == Inner, Inner.Element == Element {
@@ -21,6 +22,7 @@ public struct Matrix<Element> {
 		self.rows = Array(rows.map(Array.init))
 	}
 	
+	@inlinable
 	public init(width: Int, height: Int, repeating element: Element) {
 		self.init(Array(
 			repeating: Array(repeating: element, count: width),
@@ -28,6 +30,7 @@ public struct Matrix<Element> {
 		))
 	}
 	
+	@inlinable
 	public init(width: Int, height: Int, computing element: (Vector2) throws -> Element) rethrows {
 		self.init(
 			try (0..<height).map { y in
@@ -38,6 +41,7 @@ public struct Matrix<Element> {
 		)
 	}
 	
+	@inlinable
 	public init<S: Sequence>(
 		positions: S,
 		present: Element, absent: Element
@@ -107,6 +111,11 @@ public struct Matrix<Element> {
 	}
 	
 	@inlinable
+	public func positionMatrix() -> Matrix<Vector2> {
+		.init(width: width, height: height) { $0 }
+	}
+	
+	@inlinable
 	public func enumerated() -> [(position: Vector2, element: Element)] {
 		Array(zip(positions(), elements))
 	}
@@ -157,10 +166,13 @@ extension Matrix: CustomStringConvertible {
 }
 
 extension Matrix: RandomAccessCollection {
+	@inlinable
 	public var startIndex: Vector2 { .zero }
 	
+	@inlinable
 	public var endIndex: Vector2 { .init(0, height) }
 	
+	@inlinable
 	public func index(before i: Vector2) -> Vector2 {
 		if i.x - 1 >= 0 {
 			return Vector2(i.x - 1, i.y)
@@ -169,6 +181,7 @@ extension Matrix: RandomAccessCollection {
 		}
 	}
 	
+	@inlinable
 	public func index(after i: Vector2) -> Vector2 {
 		if i.x + 1 < width {
 			return Vector2(i.x + 1, i.y)
@@ -179,12 +192,14 @@ extension Matrix: RandomAccessCollection {
 }
 
 extension Matrix where Element == Int {
+	@inlinable
 	public init(digitsOf lines: [Substring]) {
 		self.init(lines.map { $0.map(String.init).asInts() })
 	}
 }
 
 extension Matrix where Element == Character {
+	@inlinable
 	public init<S: Sequence>(positions: S) where S.Element == Vector2 {
 		self.init(positions: positions, present: "█", absent: "·")
 	}
