@@ -16,8 +16,23 @@ public struct Vector2: Hashable {
 	}
 	
 	@inlinable
-	public var absolute: Int {
-		abs(x) + abs(y)
+	public var absolute: Self {
+		Self(abs(x), abs(y))
+	}
+	
+	@inlinable
+	public var maxComponent: Int {
+		max(x, y)
+	}
+	
+	@inlinable
+	public var minComponent: Int {
+		min(x, y)
+	}
+	
+	@inlinable
+	public var sum: Int {
+		x + y
 	}
 	
 	@inlinable
@@ -74,8 +89,19 @@ public struct Vector2: Hashable {
 	}
 	
 	@inlinable
+	public static func / (vec: Vector2, scale: Int) -> Vector2 {
+		vec <- { $0 /= scale }
+	}
+	
+	@inlinable
+	public static func /= (vec: inout Vector2, scale: Int) {
+		vec.x /= scale
+		vec.y /= scale
+	}
+	
+	@inlinable
 	public func distance(to other: Vector2) -> Int {
-		(self - other).absolute
+		(self - other).absolute.sum
 	}
 	
 	@inlinable
@@ -113,6 +139,26 @@ public enum Direction: CaseIterable, Rotatable {
 	case down
 	case left
 	
+	private static let byCharacter: [Character: Self] = [
+		"U": .up,
+		"R": .right,
+		"D": .down,
+		"L": .left,
+		"N": .up,
+		"E": .right,
+		"S": .down,
+		"W": .left,
+		"^": .up,
+		">": .right,
+		"v": .down,
+		"<": .left,
+	]
+	
+	/// supports URDL, NESW, ^>v\<
+	public init(_ character: Character) {
+		self = Self.byCharacter[character]!
+	}
+	
 	@inlinable
 	public var offset: Vector2 {
 		switch self {
@@ -139,6 +185,12 @@ public enum Direction: CaseIterable, Rotatable {
 		case .left:
 			return .right
 		}
+	}
+}
+
+extension Direction: Parseable {
+	public init(from parser: inout Parser) {
+		self.init(parser.consumeNext())
 	}
 }
 
