@@ -108,6 +108,11 @@ public struct Vector2: Hashable {
 	public func with(x: Int? = nil, y: Int? = nil) -> Vector2 {
 		.init(x ?? self.x, y ?? self.y)
 	}
+	
+	@inlinable
+	public func map(_ transform: (Int) throws -> Int) rethrows -> Self {
+		try .init(transform(x), transform(y))
+	}
 }
 
 extension Vector2: Comparable {
@@ -132,6 +137,8 @@ extension Vector2: Parseable {
 		y = parser.readInt()
 	}
 }
+
+// TODO: get rid of this in favor of making arbitrary vectors rotatable
 
 public enum Direction: CaseIterable, Rotatable {
 	case up
@@ -258,6 +265,7 @@ extension Array where Element == Vector2 {
 }
 
 extension Vector2 {
+	@inlinable
 	public func applyingOffsets(_ offsets: [Vector2]) -> [Vector2] {
 		offsets.map { $0 + self }
 	}
