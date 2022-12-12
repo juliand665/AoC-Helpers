@@ -206,8 +206,8 @@ extension Matrix where Element == Character {
 }
 
 extension Matrix where Element == Bool {
-	public func binaryImage() -> Matrix<Character> {
-		map { $0 ? "█" : "·" }
+	public func binaryImage() -> String {
+		map { $0 ? "██" : "··" }.rows.map { $0.joined() }.joined(separator: "\n")
 	}
 }
 
