@@ -82,42 +82,52 @@ extension Parser {
 		.init(reading: consumeLine())
 	}
 	
+	@inlinable
 	public func auto() -> String {
 		.init(input)
 	}
 	
+	@inlinable
 	public func auto() -> [Int] {
 		ints()
 	}
 	
+	@inlinable
 	public func auto() -> Int {
 		ints().onlyElement()!
 	}
 	
+	@inlinable
 	public func auto() -> (Int, Int) {
 		ints().extract()
 	}
 	
+	@inlinable
 	public func auto() -> (Int, Int, Int) {
 		ints().extract()
 	}
 	
+	@inlinable
 	public func auto() -> (Int, Int, Int, Int) {
 		ints().extract()
 	}
 	
+	@inlinable
 	public func auto() -> (Int, Int, Int, Int, Int) {
 		ints().extract()
 	}
 	
+	@inlinable
 	public func auto() -> (Int, Int, Int, Int, Int, Int) {
 		ints().extract()
 	}
 	
+	@inlinable
 	public func auto() -> (Int, Int, Int, Int, Int, Int, Int) {
 		ints().extract()
 	}
 	
+	@inlinable
 	public func auto() -> (Int, Int, Int, Int, Int, Int, Int, Int) {
 		ints().extract()
 	}
