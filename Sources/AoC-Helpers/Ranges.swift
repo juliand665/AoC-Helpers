@@ -25,3 +25,15 @@ extension Int: Parseable {
 		self = parser.readInt()
 	}
 }
+
+extension Int {
+	@inlinable
+	public func clamped(to range: ClosedRange<Self>) -> Self {
+		Swift.min(range.upperBound, Swift.max(range.lowerBound, self))
+	}
+	
+	@inlinable
+	public func clamped(to range: Range<Self>) -> Self {
+		Swift.min(range.upperBound - 1, Swift.max(range.lowerBound, self))
+	}
+}
