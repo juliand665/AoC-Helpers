@@ -37,3 +37,17 @@ extension Int {
 		Swift.min(range.upperBound - 1, Swift.max(range.lowerBound, self))
 	}
 }
+
+extension ClosedRange {
+	public func clamped(to other: PartialRangeFrom<Bound>) -> Self {
+		Swift.max(lowerBound, other.lowerBound)...upperBound
+	}
+	
+	public func clamped(to other: PartialRangeThrough<Bound>) -> Self {
+		lowerBound...Swift.min(upperBound, other.upperBound)
+	}
+	
+	public func clamped(to other: PartialRangeUpTo<Bound>) -> Self where Bound: BinaryInteger {
+		lowerBound...Swift.min(upperBound, other.upperBound - 1)
+	}
+}
