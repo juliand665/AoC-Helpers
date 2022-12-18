@@ -36,12 +36,12 @@ public struct Vector2: Hashable {
 	}
 	
 	@inlinable
-	public var neighbors: [Vector2] {
+	public var neighbors: [Self] {
 		applyingOffsets(.distance1)
 	}
 	
 	@inlinable
-	public var neighborsWithDiagonals: [Vector2] {
+	public var neighborsWithDiagonals: [Self] {
 		applyingOffsets(.distance1orDiagonal)
 	}
 	
@@ -245,14 +245,14 @@ extension Direction: CustomStringConvertible {
 }
 
 extension Array where Element == Vector2 {
-	public static let distance1 = [
+	public static let distance1: Self = [
 		Vector2(00, -1),
 		Vector2(+1, 00),
 		Vector2(00, +1),
 		Vector2(-1, 00),
 	]
 	
-	public static let distance1orDiagonal = [
+	public static let distance1orDiagonal: Self = [
 		Vector2(00, -1),
 		Vector2(+1, -1),
 		Vector2(+1, 00),
@@ -266,7 +266,7 @@ extension Array where Element == Vector2 {
 
 extension Vector2 {
 	@inlinable
-	public func applyingOffsets(_ offsets: [Vector2]) -> [Vector2] {
+	public func applyingOffsets(_ offsets: [Self]) -> [Self] {
 		offsets.map { $0 + self }
 	}
 }

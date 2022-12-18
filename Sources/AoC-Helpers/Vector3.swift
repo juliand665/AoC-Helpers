@@ -6,60 +6,72 @@ public struct Vector3: Hashable {
 	
 	public var x, y, z: Int
 	
-	public init(x: Int, y: Int, z: Int) {
+	@inlinable
+	public init(_ x: Int, _ y: Int, _ z: Int) {
 		self.x = x
 		self.y = y
 		self.z = z
 	}
 	
-	public init(_ x: Int, _ y: Int, _ z: Int) {
-		self.init(x: x, y: y, z: z)
+	@inlinable
+	public var components: [Int] {
+		[x, y, z]
 	}
 	
+	@inlinable
 	public var absolute: Int {
 		abs(x) + abs(y) + abs(z)
 	}
 	
+	@inlinable
 	public static func + (lhs: Self, rhs: Self) -> Self {
 		lhs <- { $0 += rhs }
 	}
 	
+	@inlinable
 	public static func += (lhs: inout Self, rhs: Self) {
 		lhs.x += rhs.x
 		lhs.y += rhs.y
 		lhs.z += rhs.z
 	}
 	
+	@inlinable
 	public static func - (lhs: Self, rhs: Self) -> Self {
 		lhs <- { $0 -= rhs }
 	}
 	
+	@inlinable
 	public static func -= (lhs: inout Self, rhs: Self) {
 		lhs.x -= rhs.x
 		lhs.y -= rhs.y
 		lhs.z -= rhs.z
 	}
 	
+	@inlinable
 	public static func * (vec: Self, scale: Int) -> Self {
 		vec <- { $0 *= scale }
 	}
 	
+	@inlinable
 	public static func * (scale: Int, vec: Self) -> Self {
 		vec <- { $0 *= scale }
 	}
 	
+	@inlinable
 	public static func *= (vec: inout Self, scale: Int) {
 		vec.x *= scale
 		vec.y *= scale
 		vec.z *= scale
 	}
 	
+	@inlinable
 	public func distance(to other: Self) -> Int {
 		(self - other).absolute
 	}
 }
 
 extension Vector3: Parseable {
+	@inlinable
 	public init(from parser: inout Parser) {
 		x = parser.readInt()
 		parser.consume(",")
@@ -70,6 +82,7 @@ extension Vector3: Parseable {
 }
 
 extension Vector3 {
+	@inlinable
 	public var allOrientations: [Self] {
 		[
 			// original order (even sign flips)
@@ -106,5 +119,28 @@ extension Vector3 {
 			Self(+x, +z, -y),
 			Self(-x, -z, -y),
 		]
+	}
+}
+
+extension Array where Element == Vector3 {
+	public static let distance1: [Vector3] = [
+		Vector3(+1, 00, 00),
+		Vector3(-1, 00, 00),
+		Vector3(00, +1, 00),
+		Vector3(00, -1, 00),
+		Vector3(00, 00, +1),
+		Vector3(00, 00, -1),
+	]
+}
+
+extension Vector3 {
+	@inlinable
+	public var neighbors: [Self] {
+		applyingOffsets(.distance1)
+	}
+	
+	@inlinable
+	public func applyingOffsets(_ offsets: [Self]) -> [Self] {
+		offsets.map { $0 + self }
 	}
 }
