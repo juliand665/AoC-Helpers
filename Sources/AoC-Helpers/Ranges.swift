@@ -10,6 +10,11 @@ extension ClosedRange {
 	public func contains(_ other: Self) -> Bool {
 		lowerBound <= other.lowerBound && upperBound >= other.upperBound
 	}
+	
+	@inlinable
+	public func expanded(by delta: Bound) -> Self where Bound: AdditiveArithmetic {
+		lowerBound - delta ... upperBound + delta
+	}
 }
 
 extension ClosedRange: Parseable where Bound == Int {
