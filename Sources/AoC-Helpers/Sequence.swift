@@ -134,7 +134,7 @@ extension Collection {
 	}
 }
 
-extension Collection where Element: Collection, Index == Element.Index {
+extension Collection where Element: Collection {
 	@inlinable
 	public func transposed() -> [[Element.Element]] {
 		first!.indices.map { i in map { $0[i] } }
