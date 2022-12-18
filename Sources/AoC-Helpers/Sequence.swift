@@ -152,3 +152,12 @@ extension MutableCollection {
 		}
 	}
 }
+
+extension Dictionary where Key == Int {
+	@inlinable
+	public func asArray() -> [Value] {
+		assert(keys.min() == 0)
+		assert(keys.max() == count - 1)
+		return sorted(on: \.key).map(\.value)
+	}
+}
