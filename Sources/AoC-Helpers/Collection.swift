@@ -10,6 +10,16 @@ extension Collection {
 	}
 	
 	@inlinable
+	public func onlyIndex(where condition: (Element) throws -> Bool) rethrows -> Index? {
+		try indexed().filter { try condition($1) }.onlyElement()?.index
+	}
+	
+	@inlinable
+	public func onlyIndex(of element: Element) -> Index? where Element: Equatable {
+		onlyIndex { $0 == element }
+	}
+	
+	@inlinable
 	public func asOptional() -> Element? {
 		assert(count <= 1)
 		return first
