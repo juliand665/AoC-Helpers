@@ -17,9 +17,7 @@ extension Collection {
 	
 	@inlinable
 	public subscript(wrapping index: Index) -> Element where Index: BinaryInteger {
-		let count = Index(count)
-		let simple = index % count
-		return self[simple >= 0 ? simple : simple + count]
+		self[index %% Index(count)]
 	}
 	
 	@inlinable

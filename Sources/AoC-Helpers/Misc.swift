@@ -9,3 +9,14 @@ extension Optional {
 		}
 	}
 }
+
+/// True Modulo
+infix operator %%: MultiplicationPrecedence
+
+public extension BinaryInteger {
+	@inlinable
+	static func %% (index: Self, count: Self) -> Self {
+		let simple = index % count
+		return simple >= 0 ? simple : simple + count
+	}
+}
