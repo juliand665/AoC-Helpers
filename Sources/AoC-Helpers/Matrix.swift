@@ -22,6 +22,8 @@ public struct Matrix<Element> {
 		self.rows = Array(rows.map(Array.init))
 	}
 	
+	// this conflicts with the computing init with trailing closure syntax
+	@_disfavoredOverload
 	@inlinable
 	public init(width: Int, height: Int, repeating element: Element) {
 		self.init(Array(
@@ -149,19 +151,31 @@ public struct Matrix<Element> {
 
 extension Matrix: CustomStringConvertible {
 	public var description: String {
+		"""
+		\(type(of: self))(
+		\(contentLines.map { "\t\($0)" }.joined(separator: "\n"))
+		)
+		"""
+	}
+	
+	public var contentLines: [String] {
 		let descriptions = self.map(String.init(describing:))
 		let maxLength = descriptions.map(\.count).max()!
-		let rows = descriptions.rows.map {
+		return descriptions.rows.map {
 			$0
 				.map { String(repeating: " ", count: maxLength - $0.count) + $0 }
 				.joined(separator: " ")
 		}
-		
-		return """
-		\(type(of: self))(
-		\(rows.map { "\t\($0)" }.joined(separator: "\n"))
-		)
-		"""
+	}
+}
+
+extension Matrix where Element == Character {
+	public var description: String {
+		let indices = (0...).lazy.flatMap { _ in (0..<10) }
+		let indexChars = indices.map { Character(String($0)) }
+		let headerRow = " " + indexChars.prefix(width).flatMap { " \($0)" }
+		let contentRows = zip(indexChars, contentLines).map { "\($0) \($1)" }
+		return ([headerRow] + contentRows).joined(separator: "\n")
 	}
 }
 
