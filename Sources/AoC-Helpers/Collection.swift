@@ -63,3 +63,22 @@ extension Dictionary where Key == Int {
 		return sorted(on: \.key).map(\.value)
 	}
 }
+
+public extension Dictionary {
+	@inlinable
+	init(values: some Sequence<Value>, keyedBy key: (Value) -> Key) {
+		self.init(uniqueKeysWithValues: values.map { (key($0), $0) })
+	}
+	
+	@inlinable
+	init(values: some Sequence<Value>) where Value: Identifiable, Key == Value.ID {
+		self.init(values: values, keyedBy: \.id)
+	}
+}
+
+public extension Sequence {
+	@inlinable
+	func identified<Key>(by key: (Element) -> Key) -> [Key: Element] {
+		.init(values: self, keyedBy: key)
+	}
+}
