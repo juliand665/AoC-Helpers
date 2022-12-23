@@ -146,7 +146,8 @@ public enum Direction: CaseIterable, Rotatable {
 	case down
 	case left
 	
-	private static let byCharacter: [Character: Self] = [
+	@usableFromInline
+	static let byCharacter: [Character: Self] = [
 		"U": .up,
 		"R": .right,
 		"D": .down,
@@ -162,6 +163,7 @@ public enum Direction: CaseIterable, Rotatable {
 	]
 	
 	/// supports URDL, NESW, ^>v\<
+	@inlinable
 	public init(_ character: Character) {
 		self = Self.byCharacter[character]!
 	}
@@ -192,6 +194,25 @@ public enum Direction: CaseIterable, Rotatable {
 		case .left:
 			return .right
 		}
+	}
+	
+	@inlinable
+	public var clockwise: Self {
+		switch self {
+		case .up:
+			return .right
+		case .right:
+			return .down
+		case .down:
+			return .left
+		case .left:
+			return .up
+		}
+	}
+	
+	@inlinable
+	public var counterclockwise: Self {
+		clockwise.opposite
 	}
 }
 
