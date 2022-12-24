@@ -80,6 +80,11 @@ public struct Matrix<Element> {
 	}
 	
 	@inlinable
+	public func wrap(_ position: Vector2) -> Vector2 {
+		.init(position.x %% width, position.y %% height)
+	}
+	
+	@inlinable
 	public func element(at position: Vector2) -> Element? {
 		guard isInMatrix(position) else { return nil }
 		return self[position]
