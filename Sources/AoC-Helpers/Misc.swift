@@ -21,6 +21,14 @@ public extension BinaryInteger {
 	}
 }
 
+public extension BinaryInteger {
+	@inlinable
+	func ceilOfDivision(by divisor: Self) -> Self {
+		let (quotient, remainder) = quotientAndRemainder(dividingBy: divisor)
+		return quotient + (remainder == 0 ? 0 : quotient.signum())
+	}
+}
+
 /// stores the auto-incremented IDs for `getID`
 public private(set) var rawIDs: [String] = []
 /// provides auto-incremented IDs
