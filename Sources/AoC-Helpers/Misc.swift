@@ -25,7 +25,7 @@ public extension BinaryInteger {
 	@inlinable
 	func ceilOfDivision(by divisor: Self) -> Self {
 		let (quotient, remainder) = quotientAndRemainder(dividingBy: divisor)
-		return quotient + (remainder == 0 ? 0 : quotient.signum())
+		return quotient + (remainder == 0 ? 0 : remainder.signum())
 	}
 }
 
