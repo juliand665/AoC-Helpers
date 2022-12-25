@@ -86,4 +86,14 @@ public extension Sequence {
 	func asDictionary<K, V>() -> [K: V] where Element == (K, V) {
 		.init(uniqueKeysWithValues: self)
 	}
+	
+	@inlinable
+	func asArray() -> [Element] {
+		.init(self)
+	}
+	
+	@inlinable
+	func asString() -> String where Element == Character {
+		.init(self)
+	}
 }
