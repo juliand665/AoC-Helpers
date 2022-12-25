@@ -81,4 +81,9 @@ public extension Sequence {
 	func identified<Key>(by key: (Element) -> Key) -> [Key: Element] {
 		.init(values: self, keyedBy: key)
 	}
+	
+	@inlinable
+	func asDictionary<K, V>() -> [K: V] where Element == (K, V) {
+		.init(uniqueKeysWithValues: self)
+	}
 }
