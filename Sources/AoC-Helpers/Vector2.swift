@@ -36,6 +36,11 @@ public struct Vector2: Hashable {
 	}
 	
 	@inlinable
+	public var product: Int {
+		x * y
+	}
+	
+	@inlinable
 	public var neighbors: [Self] {
 		applyingOffsets(.distance1)
 	}
@@ -164,8 +169,9 @@ public enum Direction: CaseIterable, Rotatable {
 	
 	/// supports URDL, NESW, ^>v\<
 	@inlinable
-	public init(_ character: Character) {
-		self = Self.byCharacter[character]!
+	public init?(_ character: Character) {
+		guard let dir = Self.byCharacter[character] else { return nil }
+		self = dir
 	}
 	
 	@inlinable
@@ -214,11 +220,28 @@ public enum Direction: CaseIterable, Rotatable {
 	public var counterclockwise: Self {
 		clockwise.opposite
 	}
+	
+	@inlinable
+	public func rotated(clockwise: Bool) -> Self {
+		clockwise ? self.clockwise : counterclockwise
+	}
+}
+
+public extension Vector2 {
+	@inlinable
+	static func + (pos: Self, dir: Direction) -> Self {
+		pos + dir.offset
+	}
+	
+	@inlinable
+	func ray(in direction: Direction, includeFirst: Bool = false) -> some Sequence<Self> {
+		sequence(first: includeFirst ? self : self + direction) { $0 + direction }
+	}
 }
 
 extension Direction: Parseable {
 	public init(from parser: inout Parser) {
-		self.init(parser.consumeNext())
+		self.init(parser.consumeNext())!
 	}
 }
 

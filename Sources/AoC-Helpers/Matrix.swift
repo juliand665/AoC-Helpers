@@ -91,6 +91,12 @@ public struct Matrix<Element> {
 	}
 	
 	@inlinable
+	public func indexedElement(at position: Vector2) -> (position: Vector2, element: Element)? {
+		guard isInMatrix(position) else { return nil }
+		return (position, self[position])
+	}
+	
+	@inlinable
 	public func neighbors(of position: Vector2) -> [Element] {
 		position.neighbors.compactMap(element(at:))
 	}

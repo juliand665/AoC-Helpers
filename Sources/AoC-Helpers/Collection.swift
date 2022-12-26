@@ -97,3 +97,26 @@ public extension Sequence {
 		.init(self)
 	}
 }
+
+public extension RangeReplaceableCollection {
+	@inlinable
+	mutating func popFirst(_ n: Int) -> [Element]? {
+		guard count >= n else { return nil }
+		defer { removeFirst(n) }
+		return .init(prefix(n))
+	}
+	
+	@inlinable
+	mutating func popLast(_ n: Int) -> [Element]? where Self: BidirectionalCollection {
+		guard count >= n else { return nil }
+		defer { removeLast(n) }
+		return .init(suffix(n))
+	}
+}
+
+public extension BidirectionalCollection {
+	@inlinable
+	func ends(with suffix: some Collection<Element>) -> Bool where Element: Equatable {
+		self.suffix(suffix.count).elementsEqual(suffix)
+	}
+}

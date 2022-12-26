@@ -49,6 +49,11 @@ extension Character {
 	public static func + (base: Self, offset: Int) -> Self {
 		.init(.init(base.asciiValue! + .init(offset)))
 	}
+	
+	@inlinable
+	public init(asciiValue: Int) {
+		self.init(Unicode.Scalar(asciiValue)!)
+	}
 }
 
 extension Parser {
