@@ -93,6 +93,11 @@ public extension Sequence {
 	}
 	
 	@inlinable
+	func asSet() -> Set<Element> where Element: Hashable {
+		.init(self)
+	}
+	
+	@inlinable
 	func asString() -> String where Element == Character {
 		.init(self)
 	}
