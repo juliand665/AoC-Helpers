@@ -1,3 +1,5 @@
+import Algorithms
+
 extension Collection {
 	@inlinable
 	public func onlyElement() -> Element? {

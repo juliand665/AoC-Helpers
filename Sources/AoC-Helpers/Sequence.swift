@@ -1,7 +1,7 @@
 extension Sequence {
 	@inlinable
 	public func count(where isIncluded: (Element) throws -> Bool) rethrows -> Int {
-		try lazy.filter(isIncluded).count
+		try lazy.filter(isIncluded).reduce(0) { sum, _ in sum + 1 }
 	}
 	
 	@inlinable

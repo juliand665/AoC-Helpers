@@ -24,13 +24,6 @@ extension ClosedRange: Parseable where Bound == Int {
 	}
 }
 
-extension Int: Parseable {
-	@inlinable
-	public init(from parser: inout Parser) {
-		self = parser.readInt()
-	}
-}
-
 extension Int {
 	@inlinable
 	public func clamped(to range: ClosedRange<Self>) -> Self {

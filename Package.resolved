@@ -1,0 +1,43 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "HandyOperators",
+        "repositoryURL": "https://github.com/juliand665/HandyOperators",
+        "state": {
+          "branch": null,
+          "revision": "39f39ae74471112d54152227bb70053b59ea796f",
+          "version": "2.1.0"
+        }
+      },
+      {
+        "package": "SimpleParser",
+        "repositoryURL": "https://github.com/juliand665/SimpleParser",
+        "state": {
+          "branch": "main",
+          "revision": "34f26c03dddacd91618c7023f608c6295d3d3a66",
+          "version": null
+        }
+      },
+      {
+        "package": "swift-algorithms",
+        "repositoryURL": "https://github.com/apple/swift-algorithms.git",
+        "state": {
+          "branch": null,
+          "revision": "f6919dfc309e7f1b56224378b11e28bab5bccc42",
+          "version": "1.2.0"
+        }
+      },
+      {
+        "package": "swift-numerics",
+        "repositoryURL": "https://github.com/apple/swift-numerics.git",
+        "state": {
+          "branch": null,
+          "revision": "0a5bc04095a675662cf24757cc0640aa2204253b",
+          "version": "1.0.2"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
