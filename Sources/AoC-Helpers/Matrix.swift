@@ -97,8 +97,13 @@ public struct Matrix<Element> {
 	}
 	
 	@inlinable
-	public func neighbors(of position: Vector2) -> [Element] {
-		position.neighbors.compactMap(element(at:))
+	public func neighbors(of position: Vector2) -> some Collection<Element> {
+		position.neighbors.lazy.compactMap(element(at:))
+	}
+	
+	@inlinable
+	public func neighborsWithDiagonals(of position: Vector2) -> some Collection<Element> {
+		position.neighborsWithDiagonals.lazy.compactMap(element(at:))
 	}
 	
 	@inlinable
@@ -107,19 +112,19 @@ public struct Matrix<Element> {
 	}
 	
 	@inlinable
-	public func column(at x: Int) -> [Element] {
-		(0..<height).map { self[x, $0] }
+	public func column(at x: Int) -> ColumnView {
+		.init(base: self, x: x)
 	}
 	
 	@inlinable
-	public func columns() -> [[Element]] {
-		(0..<width).map(column(at:))
+	public func columns() -> some Collection<ColumnView> {
+		(0..<width).lazy.map(column(at:))
 	}
 	
 	@inlinable
-	public func positions() -> [Vector2] {
-		(0..<height).flatMap { y in
-			(0..<width).map { x in Vector2(x, y) }
+	public func positions() -> some Collection<Vector2> {
+		(0..<height).lazy.flatMap { y in
+			(0..<width).lazy.map { x in Vector2(x, y) }
 		}
 	}
 	
@@ -129,8 +134,8 @@ public struct Matrix<Element> {
 	}
 	
 	@inlinable
-	public func enumerated() -> [(position: Vector2, element: Element)] {
-		Array(zip(positions(), elements))
+	public func indexed() -> some Collection<(position: Vector2, element: Element)> {
+		zip(positions(), elements).lazy.map { $0 } // rename tuple
 	}
 	
 	@inlinable
@@ -138,7 +143,7 @@ public struct Matrix<Element> {
 		guard let first = self.element(at: .zero) else { return self }
 		
 		return Matrix(width: height, height: width, repeating: first) <- { copy in
-			for (position, element) in enumerated() {
+			for (position, element) in indexed() {
 				copy[position.y, position.x] = element
 			}
 		}
@@ -157,6 +162,26 @@ public struct Matrix<Element> {
 				.transposed()
 				.map { Array($0.joined()) }
 		})
+	}
+	
+	public struct ColumnView: RandomAccessCollection {
+		@usableFromInline var base: Matrix
+		@usableFromInline var x: Int
+		public let startIndex: Int
+		public let endIndex: Int
+		
+		@inlinable
+		public subscript(y: Int) -> Element {
+			base[x, y]
+		}
+		
+		@usableFromInline
+		init(base: Matrix, x: Int) {
+			self.base = base
+			self.x = x
+			self.startIndex = 0
+			self.endIndex = base.rows.count
+		}
 	}
 }
 

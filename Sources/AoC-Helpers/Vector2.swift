@@ -41,12 +41,12 @@ public struct Vector2: Hashable {
 	}
 	
 	@inlinable
-	public var neighbors: [Self] {
+	public var neighbors: some Collection<Self> {
 		applyingOffsets(.distance1)
 	}
 	
 	@inlinable
-	public var neighborsWithDiagonals: [Self] {
+	public var neighborsWithDiagonals: some Collection<Self> {
 		applyingOffsets(.distance1orDiagonal)
 	}
 	
@@ -315,7 +315,7 @@ extension Array where Element == Vector2 {
 
 extension Vector2 {
 	@inlinable
-	public func applyingOffsets(_ offsets: [Self]) -> [Self] {
-		offsets.map { $0 + self }
+	public func applyingOffsets(_ offsets: [Self]) -> some Collection<Self> {
+		offsets.lazy.map { $0 + self }
 	}
 }
