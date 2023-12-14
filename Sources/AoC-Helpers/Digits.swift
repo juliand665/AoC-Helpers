@@ -24,3 +24,16 @@ extension BinaryInteger where Stride: SignedInteger {
 		self = bits.reduce(0) { $0 << 1 | ($1 ? 1 : 0) }
 	}
 }
+
+extension Sequence where Element == Bool {
+	@inlinable
+	public func asBits<I: BinaryInteger>(of type: I.Type = I.self) -> I {
+		reduce(0) { $0 << 1 | ($1 ? 1 : 0) }
+	}
+	
+	@_disfavoredOverload
+	@inlinable
+	public func asBits() -> Int {
+		asBits()
+	}
+}
