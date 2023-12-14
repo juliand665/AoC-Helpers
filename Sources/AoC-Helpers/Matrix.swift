@@ -7,6 +7,11 @@ public struct Matrix<Element> {
 	public var rows: [[Element]]
 	
 	@inlinable
+	public var columns: some Collection<ColumnView> {
+		(0..<width).lazy.map(column(at:))
+	}
+	
+	@inlinable
 	public var elements: FlattenSequence<[[Element]]> {
 		rows.joined()
 	}
@@ -114,11 +119,6 @@ public struct Matrix<Element> {
 	@inlinable
 	public func column(at x: Int) -> ColumnView {
 		.init(base: self, x: x)
-	}
-	
-	@inlinable
-	public func columns() -> some Collection<ColumnView> {
-		(0..<width).lazy.map(column(at:))
 	}
 	
 	@inlinable
@@ -262,3 +262,4 @@ extension Matrix where Element == Bool {
 }
 
 extension Matrix: Equatable where Element: Equatable {}
+extension Matrix: Hashable where Element: Hashable {}

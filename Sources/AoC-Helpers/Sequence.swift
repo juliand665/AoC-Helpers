@@ -6,18 +6,12 @@ extension Sequence {
 	
 	@inlinable
 	public func sorted<C>(on accessor: (Element) -> C) -> [Element] where C: Comparable {
-		self
-			.map { ($0, accessor($0)) }
-			.sorted { $0.1 < $1.1 }
-			.map { $0.0 }
+		self.sorted { accessor($0) < accessor($1) }
 	}
 	
 	@inlinable
 	public func max<C>(on accessor: (Element) -> C) -> Element? where C: Comparable {
-		self
-			.map { ($0, accessor($0)) }
-			.max { $0.1 < $1.1 }
-			.map { $0.0 }
+		self.max { accessor($0) < accessor($1) }
 	}
 	
 	@inlinable
@@ -110,8 +104,17 @@ extension Sequence where Element: Hashable {
 }
 
 extension Sequence where Element: Sequence {
+	@_disfavoredOverload
 	@inlinable
 	public func nestedMap<T>(_ transform: (Element.Element) throws -> T) rethrows -> [[T]] {
 		try map { try $0.map(transform) }
+	}
+	
+	@_disfavoredOverload
+	@inlinable
+	public func nestedMap<T>(
+		_ transform: @escaping (Element.Element) -> T
+	) -> some Collection<LazyMapSequence<Element, T>> { // can't nest opaque return types as of Xcode 15.1
+		self.lazy.map { $0.lazy.map(transform) }
 	}
 }

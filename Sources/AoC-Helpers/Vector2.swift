@@ -248,6 +248,7 @@ extension Direction: Parseable {
 public extension Direction {
 	static let nswe: [Self] = [.up, .down, .left, .right]
 	static let nesw: [Self] = [.up, .right, .down, .left]
+	static let nwse: [Self] = [.up, .left, .down, .right]
 }
 
 public struct DirectionSet: OptionSet {
