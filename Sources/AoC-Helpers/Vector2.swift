@@ -252,10 +252,16 @@ public extension Direction {
 }
 
 public struct DirectionSet: OptionSet {
+	public typealias Element = Self
+	
 	public static let up = Self(rawValue: 1 << 0)
 	public static let right = Self(rawValue: 1 << 1)
 	public static let down = Self(rawValue: 1 << 2)
 	public static let left = Self(rawValue: 1 << 3)
+	
+	public static let horizontal: Self = [.left, .right]
+	public static let vertical: Self = [.up, .down]
+	public static let none: Self = .init(rawValue: 0)
 	
 	public var rawValue: UInt8
 	
@@ -276,6 +282,11 @@ public struct DirectionSet: OptionSet {
 		case .left:
 			self = .left
 		}
+	}
+	
+	@inlinable
+	public func contains(_ direction: Direction) -> Bool {
+		contains(Self(direction))
 	}
 }
 
