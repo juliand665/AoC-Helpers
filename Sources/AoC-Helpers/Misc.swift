@@ -10,25 +10,6 @@ extension Optional {
 	}
 }
 
-/// True Modulo
-infix operator %%: MultiplicationPrecedence
-
-public extension BinaryInteger {
-	@inlinable
-	static func %% (index: Self, count: Self) -> Self {
-		let simple = index % count
-		return simple >= 0 ? simple : simple + count
-	}
-}
-
-public extension BinaryInteger {
-	@inlinable
-	func ceilOfDivision(by divisor: Self) -> Self {
-		let (quotient, remainder) = quotientAndRemainder(dividingBy: divisor)
-		return quotient + (remainder == 0 ? 0 : remainder.signum())
-	}
-}
-
 /// stores the auto-incremented IDs for `getID`
 public private(set) var rawIDs: [String] = []
 /// provides auto-incremented IDs
