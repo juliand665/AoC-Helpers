@@ -19,7 +19,7 @@ public extension BinaryInteger {
 
 /// greatest common divisor of two integers (Euclid's algorithm)
 @inlinable
-public func gcd(_ a: Int, _ b: Int) -> Int {
+public func gcd<I: BinaryInteger>(_ a: I, _ b: I) -> I {
 	let remainder = a % b
 	guard remainder > 0 else { return b }
 	return gcd(b, remainder)
@@ -27,6 +27,18 @@ public func gcd(_ a: Int, _ b: Int) -> Int {
 
 /// lowest common multiple of two integers (via ``gcd``)
 @inlinable
-public func lcm(_ a: Int, _ b: Int) -> Int {
+public func lcm<I: BinaryInteger>(_ a: I, _ b: I) -> I {
 	a / gcd(a, b) * b
+}
+
+public extension Sequence where Element: BinaryInteger {
+	@inlinable
+	func greatestCommonDivisor() -> Element {
+		reduce(1, gcd)
+	}
+	
+	@inlinable
+	func lowestCommonMultiple() -> Element {
+		reduce(1, lcm)
+	}
 }
