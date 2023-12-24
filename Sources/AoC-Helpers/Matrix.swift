@@ -17,6 +17,13 @@ public struct Matrix<Element> {
 	}
 	
 	@inlinable
+	public var positions: some Collection<Vector2> {
+		(0..<height).lazy.flatMap { y in
+			(0..<width).lazy.map { x in Vector2(x, y) }
+		}
+	}
+	
+	@inlinable
 	public init<Outer: Collection, Inner: Collection>(
 		_ rows: Outer
 	) where Outer.Element == Inner, Inner.Element == Element {
@@ -122,20 +129,13 @@ public struct Matrix<Element> {
 	}
 	
 	@inlinable
-	public func positions() -> some Collection<Vector2> {
-		(0..<height).lazy.flatMap { y in
-			(0..<width).lazy.map { x in Vector2(x, y) }
-		}
-	}
-	
-	@inlinable
 	public func positionMatrix() -> Matrix<Vector2> {
 		.init(width: width, height: height) { $0 }
 	}
 	
 	@inlinable
-	public func indexed() -> some Collection<(position: Vector2, element: Element)> {
-		zip(positions(), elements).lazy.map { $0 } // rename tuple
+	public var indexed: some Collection<(position: Vector2, element: Element)> {
+		zip(positions, elements).lazy.map { $0 } // rename tuple
 	}
 	
 	@inlinable
@@ -143,7 +143,7 @@ public struct Matrix<Element> {
 		guard let first = self.element(at: .zero) else { return self }
 		
 		return Matrix(width: height, height: width, repeating: first) <- { copy in
-			for (position, element) in indexed() {
+			for (position, element) in indexed {
 				copy[position.y, position.x] = element
 			}
 		}
