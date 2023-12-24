@@ -24,6 +24,21 @@ public struct Vector3: Hashable {
 	}
 	
 	@inlinable
+	public var normalized: Self {
+		let scale = absolute
+		return scale == 0 ? self : self / scale
+	}
+	
+	@inlinable public var xy: Vector2 { .init(x, y) }
+	@inlinable public var yz: Vector2 { .init(y, z) }
+	@inlinable public var xz: Vector2 { .init(x, z) }
+	
+	@inlinable
+	public func with(x: Int? = nil, y: Int? = nil, z: Int? = nil) -> Self {
+		.init(x ?? self.x, y ?? self.y, z ?? self.z)
+	}
+	
+	@inlinable
 	public static func + (lhs: Self, rhs: Self) -> Self {
 		lhs <- { $0 += rhs }
 	}
@@ -62,6 +77,18 @@ public struct Vector3: Hashable {
 		vec.x *= scale
 		vec.y *= scale
 		vec.z *= scale
+	}
+	
+	@inlinable
+	public static func / (vec: Self, scale: Int) -> Self {
+		vec <- { $0 /= scale }
+	}
+	
+	@inlinable
+	public static func /= (vec: inout Self, scale: Int) {
+		vec.x /= scale
+		vec.y /= scale
+		vec.z /= scale
 	}
 	
 	@inlinable
