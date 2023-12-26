@@ -7,12 +7,12 @@ public struct Matrix<Element> {
 	public var rows: [[Element]]
 	
 	@inlinable
-	public var columns: some Collection<ColumnView> {
+	public var columns: some RandomAccessCollection<ColumnView> {
 		(0..<width).lazy.map(column(at:))
 	}
 	
 	@inlinable
-	public var elements: FlattenSequence<[[Element]]> {
+	public var elements: some BidirectionalCollection<Element> {
 		rows.joined()
 	}
 	
@@ -126,6 +126,11 @@ public struct Matrix<Element> {
 	@inlinable
 	public func column(at x: Int) -> ColumnView {
 		.init(base: self, x: x)
+	}
+	
+	@inlinable
+	public mutating func swapRowsAt(_ i: Int, _ j: Int) {
+		rows.swapAt(i, j)
 	}
 	
 	@inlinable

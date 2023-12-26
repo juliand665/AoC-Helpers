@@ -95,6 +95,15 @@ public struct Vector3: Hashable {
 	public func distance(to other: Self) -> Int {
 		(self - other).absolute
 	}
+	
+	@inlinable
+	public func crossProduct(with other: Self) -> Self {
+		.init(
+			y * other.z - z * other.y,
+			z * other.x - x * other.z,
+			x * other.y - y * other.x
+		)
+	}
 }
 
 extension Vector3: Parseable {
