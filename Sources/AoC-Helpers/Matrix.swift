@@ -268,3 +268,17 @@ extension Matrix where Element == Bool {
 
 extension Matrix: Equatable where Element: Equatable {}
 extension Matrix: Hashable where Element: Hashable {}
+
+extension Matrix {
+    @inlinable
+    public func positions(where shouldInclude: (Element) throws -> Bool) rethrows -> [Vector2] {
+        try positions.filter { try shouldInclude(self[$0]) }
+    }
+}
+
+extension Matrix where Element: Equatable {
+    @inlinable
+    public func positions(of element: Element) -> [Vector2] {
+        positions { $0 == element }
+    }
+}

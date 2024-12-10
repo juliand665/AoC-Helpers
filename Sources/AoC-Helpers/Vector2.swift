@@ -94,6 +94,17 @@ public struct Vector2: Hashable {
 	}
 	
 	@inlinable
+	public static func * (lhs: Vector2, rhs: Vector2) -> Vector2 {
+		lhs <- { $0 *= rhs }
+	}
+	
+	@inlinable
+	public static func *= (lhs: inout Vector2, rhs: Vector2) {
+		lhs.x *= rhs.x
+		lhs.y *= rhs.y
+	}
+	
+	@inlinable
 	public static func / (vec: Vector2, scale: Int) -> Vector2 {
 		vec <- { $0 /= scale }
 	}
