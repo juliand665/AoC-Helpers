@@ -1,3 +1,12 @@
+import Algorithms
+
+extension Collection {
+    @inlinable
+    public func partitioningElement(where belongsInSecondPartition: (Element) throws -> Bool) rethrows -> Element {
+        self[try partitioningIndex(where: belongsInSecondPartition)]
+    }
+}
+
 @inlinable
 public func binarySearch<Bound: SignedInteger, Output: Comparable>(
 	in bounds: ClosedRange<Bound>,
