@@ -73,6 +73,15 @@ extension Sequence where Element: AdditiveArithmetic {
 	}
 }
 
+extension Sequence {
+    @inlinable
+    public func sum<Value: AdditiveArithmetic>(
+        of transform: (Element) throws -> Value
+    ) rethrows -> Value {
+        try reduce(.zero) { try $0 + transform($1) }
+    }
+}
+
 extension Sequence where Element == Int {
 	@inlinable
 	public func product() -> Element {
